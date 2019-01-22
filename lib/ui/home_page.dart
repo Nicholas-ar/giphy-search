@@ -97,7 +97,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   int _getCount(List data) {
-    print(data.length);
     if (_search == null) {
       return data.length;
     } else {
@@ -116,17 +115,22 @@ class _HomePageState extends State<HomePage> {
             return GestureDetector(
               child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
-                image: snapshot.data["data"][index]["images"]["fixed_height"]["url"],
+                image: snapshot.data["data"][index]["images"]["fixed_height"]
+                    ["url"],
                 height: 300.0,
                 fit: BoxFit.cover,
               ),
-              onTap: (){
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => GifPage(snapshot.data["data"][index]))
-                );
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GifPage(snapshot.data["data"][index])));
               },
-              onLongPress: (){
-                Share.share("Take a look at this gif!" + snapshot.data["data"][index]["images"]["fixed_height"]["url"]);
+              onLongPress: () {
+                Share.share("Take a look at this gif!" +
+                    snapshot.data["data"][index]["images"]["fixed_height"]
+                        ["url"]);
               },
             );
           } else {
@@ -158,6 +162,3 @@ class _HomePageState extends State<HomePage> {
         });
   }
 }
-/*
-
-        }*/
