@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:giphy_search/ui/gif_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
           "https://api.giphy.com/v1/gifs/trending?api_key=zU8GJK8W1k0OumyrulF0Fj9GAngcD8Rm&limit=26&rating=R");
     } else {
       response = await http.get(
-          "https://api.giphy.com/v1/gifs/search?api_key=&q=$_search&limit=25&offset=$_offset&rating=R&lang=en");
+          "https://api.giphy.com/v1/gifs/search?api_key=zU8GJK8W1k0OumyrulF0Fj9GAngcD8Rm&q=$_search&limit=25&offset=$_offset&rating=R&lang=en");
     }
 
     return json.decode(response.body);
@@ -30,9 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    _getGifs().then((map) {
-      print(map);
-    });
+    _getGifs();
   }
 
   @override
@@ -86,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                       if (snapshot.hasError)
                         return Container();
                       else
-                        _createGifTable(context, snapshot);
+                        return _createGifTable(context, snapshot);
                   }
                 }),
           ),
@@ -96,6 +95,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   int _getCount(List data) {
+    print(data.length);
     if (_search == null) {
       return data.length;
     } else {
@@ -117,6 +117,11 @@ class _HomePageState extends State<HomePage> {
                 height: 300.0,
                 fit: BoxFit.cover,
               ),
+              onTap: (){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => GifPage(snapshot.data["data"][index]))
+                );
+              },
             );
           } else {
             return GestureDetector(
@@ -137,9 +142,9 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              onTap: (){
+              onTap: () {
                 setState(() {
-                  _offset +=25;
+                  _offset += 25;
                 });
               },
             );
@@ -147,3 +152,6 @@ class _HomePageState extends State<HomePage> {
         });
   }
 }
+/*
+
+        }*/
